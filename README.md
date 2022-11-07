@@ -49,6 +49,8 @@ import os, json
     'whitenoise.runserver_nostatic',
     '***appName***',
     'rest_framework',
+    'django_filters',
+    'crispy_forms',
     'corsheaders',
 ```
    - Within MIDDLEWARE (just after SecurityMiddleware), add:
@@ -114,6 +116,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 ```
    - Allow CORS for all origins by adding:
@@ -158,10 +163,16 @@ class ***ModelClassName***Serializer(serializers.ModelSerializer):
 from rest_framework import viewsets
 from .models import ***ModelClassName***
 from .serializers import ***ModelClassName***Serializer
+from django_filters import rest_framework as filters
 
 class ***ModelClassName***ViewSet(viewsets.ModelViewSet):
     queryset = ***ModelClassName***.objects.all()
     serializer_class = ***ModelClassName***Serializer
+```
+  - If a ViewSet needs to be filterable by fields, add this code within it as well:
+```
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('***fieldName1***', '***fieldName2***')
 ```
 9. Create a routers.py within ***projectName/projectName*** (should be collocated with urls.py):
 ```
@@ -229,6 +240,8 @@ pyyaml
 uritemplate
 django-cors-headers
 Whitenoise
+django-filter
+django-crispy-forms
 ```
 14. Create a database service (name must match your manifest.yml) in the command line:
 ```
