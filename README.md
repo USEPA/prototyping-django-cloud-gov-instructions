@@ -56,7 +56,7 @@ import os, json
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ```
-   - Replace DATABASES with:
+   - Where the SECRET_KEY is declared, replace it with:
 ```
 if os.getenv('VCAP_SERVICES'):
     print("Running on cloud.gov!")
@@ -77,6 +77,33 @@ else:
         SECRET_KEY = get_random_secret_key()
         f.write(SECRET_KEY)
     f.close()
+```
+   - Replace DATABASES with:
+```
+if os.getenv('VCAP_SERVICES'):
+    from urllib.parse import urlparse
+    url = urlparse(
+            os.environ.get(
+                'DATABASE_URL'
+                )
+            )
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': url.path[1:],
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port,
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 ```
    - Require authentication for the APIs by adding:
 ```
