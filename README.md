@@ -51,12 +51,12 @@ import os, json
     'rest_framework',
     'corsheaders',
 ```
-    - Within MIDDLEWARE (just after SecurityMiddleware), add:
+   - Within MIDDLEWARE (just after SecurityMiddleware), add:
 ```
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ```
-    - Replace DATABASES with:
+   - Replace DATABASES with:
 ```
 if os.getenv('VCAP_SERVICES'):
     print("Running on cloud.gov!")
@@ -78,7 +78,7 @@ else:
         f.write(SECRET_KEY)
     f.close()
 ```
-     - Require authentication for the APIs by adding:
+   - Require authentication for the APIs by adding:
 ```
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -89,18 +89,15 @@ REST_FRAMEWORK = {
     ),
 }
 ```
-
-    - Allow CORS for all origins by adding:
+   - Allow CORS for all origins by adding:
 ```
 CORS_ALLOW_ALL_ORIGINS = True
 ```
-
-    - Update ALLOWED_HOSTS to:
+   - Update ALLOWED_HOSTS to:
 ```
 ALLOWED_HOSTS = ['*']
 ```
-
-    - Above STATIC_URL add:
+   - Above STATIC_URL add:
 ```
 STATIC_ROOT = BASE_DIR / "staticfiles"
 ```
