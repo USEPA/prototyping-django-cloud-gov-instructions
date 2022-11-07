@@ -27,7 +27,7 @@ Note ***bold, italic*** (or three *s within code) text indicates you should repl
    - views.py
    - viewsets.py
 
-## Steps
+## Steps to set up APIs
 1. Start the project in the python command line
 ```
 django-admin startproject ***projectName***
@@ -251,4 +251,18 @@ python manage.py runserver
 18. Push to cloud.gov sandbox:
 ```
 cf push -f manifest.yml
+```
+## Steps to set up Admin site
+1. Register your models withing admin.py
+```
+from .models import ***ModelClassName***
+	
+admin.site.register(***ModelClassName***)
+```
+2. Add to admin.py
+```
+admin.site.site_header = "***projectName*** Administration"
+admin.site.site_title = "***projectName***"
+admin.site.site_url = "/***projectName***-admin"
+admin.site.index_title = "***projectName*** API Administration"
 ```
