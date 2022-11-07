@@ -172,7 +172,10 @@ class ***ModelClassName***ViewSet(viewsets.ModelViewSet):
   - If a ViewSet needs to be filterable by fields, add this code within it as well:
 ```
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('***fieldName1***', '***fieldName2***')
+    filterset_fields = {
+        '***fieldName1***': ['exact', 'contains'], 
+        '***fieldName2***': ['exact', 'contains'],
+    }
 ```
 9. Create a routers.py within ***projectName/projectName*** (should be collocated with urls.py):
 ```
