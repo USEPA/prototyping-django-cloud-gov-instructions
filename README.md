@@ -101,3 +101,127 @@ ALLOWED_HOSTS = ['*']
 ```
 STATIC_ROOT = BASE_DIR / "staticfiles"
 ```
+5. Edit models.py
+6. Add to urls.py:
+```
+from .routers import router
+from rest_framework.schemas import get_schema_view
+```
+   - And within urlpatterns:
+```
+    path('api/', include(router.urls)),
+    path('openapi', get_schema_view(
+            title="crosswalks",
+            description="REST APIs",
+            version="1.0.0"
+    ), name='openapi-schema'),
+```
+7. Create serializers.py within ***appName*** and add a modelClassName for ever class in your models.py:
+```
+from rest_framework import serializers
+from .models import ***ModelClassName***
+
+class ***ModelClassName***Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = ***ModelClassName***
+        fields = '__all__'
+```
+8. Add a viewsets.py within ***appName***:
+```
+from rest_framework import viewsets
+from .models import ***ModelClassName***
+from .serializers import ***ModelClassName***Serializer
+
+class ***ModelClassName***ViewSet(viewsets.ModelViewSet):
+    queryset = ***ModelClassName***.objects.all()
+    serializer_class = ***ModelClassName***Serializer
+```
+9. Create a routers.py within ***projectName/projectName*** (should be collocated with urls.py):
+```
+from rest_framework import routers
+from ***appName***.viewsets import ***ModelClassName***ViewSet
+
+router = routers.DefaultRouter()
+		
+router.register(r'***ModelClassName***', ***ModelClassName***ViewSet)
+```
+10. Create a manifest.yml file within your top-level project folder:
+```
+---
+applications:
+- name: ***projectName***
+  memory: 256M
+  instances: 1
+  command: bash ./run.sh
+  buildpacks: 
+  - python_buildpack
+  services:
+  - ***databaseServiceName***
+  - ***credentialsServiceName***
+```
+11. Create a run.sh file within the top-level project directory:
+```
+#!/bin/bash
+echo "make migrations"
+
+python manage.py makemigrations
+
+echo "migrate"
+
+python manage.py migrate
+
+# If admin account exists, reset its password according to credentials provided, otherwise create it
+cat <<EOF | python manage.py shell
+import os, json
+from django.contrib.auth.models import User
+
+creds = json.loads(os.getenv('VCAP_SERVICES'))['user-provided'][0]['credentials']
+
+u = User.objects.filter(username=creds['username'])
+
+if u.exists():
+    u[0].set_password(creds['password'])
+else:
+    User.objects.create_superuser(creds['username'], creds['email'], creds['password'])
+EOF
+
+echo "Starting Django Server..."
+
+python manage.py runserver 0.0.0.0:$PORT
+```
+12. Create a Procfile within the top-level project directory:
+```
+web: gunicorn ***projectName***.wsgi
+```
+13. Create a requirements.txt within the top-level project directory:
+```
+djangorestframework
+psycopg2
+gunicorn
+pyyaml 
+uritemplate
+django-cors-headers
+Whitenoise
+```
+14. Create a database service (name must match your manifest.yml) in the command line:
+```
+cf create-service aws-rds micro-psql ***databaseServiceName***
+```
+15. Create a credentials service within the command line:
+```
+cf cups ***credentialsServiceName*** -p "{\"username\":\"***adminUsername***\",\"email\":\"noreply@epa.gov\",\"password\":\"***adminPassword***\",\"secret_key\":\"***secretKey***\"}"
+```
+16. Collect static files:
+```
+python manage.py collectstatic
+```
+17. Run migrations locally and check that the site is working:
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```
+18. Push to cloud.gov sandbox:
+```
+cf push -f manifest.yml
+```
