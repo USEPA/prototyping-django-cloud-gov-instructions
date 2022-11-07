@@ -101,7 +101,7 @@ ALLOWED_HOSTS = ['*']
 ```
 STATIC_ROOT = BASE_DIR / "staticfiles"
 ```
-5. Edit models.py
+5. Edit models.py to suit your dataset. For more information, see [Django documentation](https://docs.djangoproject.com/en/4.1/topics/db/models/).
 6. Add to urls.py:
 ```
 from .routers import router
