@@ -40,7 +40,7 @@ db.sqlite3
 ```
 3. Copy .cfignore to .gitignore
 4. Edit settings.py
-   - Add:
+ - Add:
 ```
 import os, json
 ```
