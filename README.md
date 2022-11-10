@@ -44,20 +44,6 @@ db.sqlite3
 ```
 import os, json
 ```
-   - Add to INSTALLED_APPS:
-```
-    'whitenoise.runserver_nostatic',
-    '***appName***',
-    'rest_framework',
-    'django_filters',
-    'crispy_forms',
-    'corsheaders',
-```
-   - Within MIDDLEWARE (just after SecurityMiddleware), add:
-```
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-```
    - Where the SECRET_KEY is declared, replace it with:
 ```
 if os.getenv('VCAP_SERVICES'):
@@ -79,6 +65,28 @@ else:
         SECRET_KEY = get_random_secret_key()
         f.write(SECRET_KEY)
     f.close()
+```
+   - Allow CORS for all origins by adding:
+```
+CORS_ALLOW_ALL_ORIGINS = True
+```
+   - Update ALLOWED_HOSTS to:
+```
+ALLOWED_HOSTS = ['*']
+```
+   - Add to INSTALLED_APPS:
+```
+    'whitenoise.runserver_nostatic',
+    '***appName***',
+    'rest_framework',
+    'django_filters',
+    'crispy_forms',
+    'corsheaders',
+```
+   - Within MIDDLEWARE (just after SecurityMiddleware), add:
+```
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ```
    - Replace DATABASES with:
 ```
@@ -120,14 +128,6 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
-```
-   - Allow CORS for all origins by adding:
-```
-CORS_ALLOW_ALL_ORIGINS = True
-```
-   - Update ALLOWED_HOSTS to:
-```
-ALLOWED_HOSTS = ['*']
 ```
    - Above STATIC_URL add:
 ```
