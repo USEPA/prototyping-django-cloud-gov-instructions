@@ -44,7 +44,7 @@ db.sqlite3
 ```
 import os, json
 ```
-   - Where the SECRET_KEY is declared, replace it with:
+   - Where the SECRET_KEY and DEBUG are declared, replace them with:
 ```
 if os.getenv('VCAP_SERVICES'):
     print("Running on cloud.gov!")
