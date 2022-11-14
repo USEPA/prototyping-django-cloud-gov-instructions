@@ -276,10 +276,3 @@ from .models import ***ModelClassName***
 	
 admin.site.register(***ModelClassName***)
 ```
-2. Add to admin.py
-```
-admin.site.site_header = "***projectName*** Administration"
-admin.site.site_title = "***projectName***"
-admin.site.site_url = "/***projectName***-admin"
-admin.site.index_title = "***projectName*** API Administration"
-```
