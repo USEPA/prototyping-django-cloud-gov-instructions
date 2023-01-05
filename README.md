@@ -1,5 +1,5 @@
 # Instructions for a simple Django project in cloud.gov for prototyping APIs
-These directions are used to create a very minimal (and not production-ready) set of APIs in a cloud.gov sandbox to help refine data models.
+These directions are used to create a very minimal (and ***NOT PRODUCTION-READY***) set of APIs in a cloud.gov sandbox to help refine data models. We have found them useful to quickly standup REST APIs and iterate to find how we would like them structured and as a learning tool.
 It uses Django Rest Framework for the APIs and the Djano admin site to allow users to see the data model. It sets up a single admin account, so the security is limited.
 ## Final project set-up
 Note ***bold, italic*** (or three *s within code) text indicates you should replace it with your projectName/appName.
