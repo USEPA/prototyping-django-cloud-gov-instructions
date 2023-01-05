@@ -144,7 +144,7 @@ from rest_framework.schemas import get_schema_view
 ```
     path('api/', include(router.urls)),
     path('openapi', get_schema_view(
-            title="crosswalks",
+            title="***your Title***",
             description="REST APIs",
             version="1.0.0"
     ), name='openapi-schema'),
