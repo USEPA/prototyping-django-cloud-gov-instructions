@@ -1,4 +1,4 @@
-# Instructions for a simple Django project in cloud.gov for prototyping APIs
+![image](https://github.com/USEPA/prototyping-django-cloud-gov-instructions/assets/16242091/7978f790-4e03-4acd-ad45-bd052c26e887)# Instructions for a simple Django project in cloud.gov for prototyping APIs
 These directions are used to create a very minimal (and ***NOT PRODUCTION-READY***) set of APIs in a cloud.gov sandbox to help refine data models. We have found them useful to quickly standup REST APIs and iterate to find how we would like them structured and as a learning tool.
 It uses Django Rest Framework for the APIs and the Djano admin site to allow users to see the data model. It sets up a single admin account, so the security is limited.
 ## Final project set-up
@@ -253,7 +253,7 @@ cf create-service aws-rds micro-psql ***databaseServiceName***
 ```
 15. Create a credentials service within the command line:
 ```
-cf cups ***credentialsServiceName*** -p "{\"username\":\"***adminUsername***\",\"email\":\"noreply@epa.gov\",\"password\":\"***adminPassword***\",\"secret_key\":\"***secretKey***\"}"
+cf cups ***credentialsServiceName*** -p '{"username":"***adminUsername***","email":"noreply@epa.gov","password":"***adminPassword***","secret_key":"***secretKey***"}'
 ```
 16. Collect static files:
 ```
