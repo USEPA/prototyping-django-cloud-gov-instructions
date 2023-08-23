@@ -1,3 +1,4 @@
+DEPRECATED - This repository is no longer being maintained and is available for reuse.
 # Instructions for a simple Django project in cloud.gov for prototyping APIs
 These directions are used to create a very minimal (and ***NOT PRODUCTION-READY***) set of APIs in a cloud.gov sandbox to help refine data models. We have found them useful to quickly standup REST APIs and iterate to find how we would like them structured and as a learning tool.
 It uses Django Rest Framework for the APIs and the Djano admin site to allow users to see the data model. It sets up a single admin account, so the security is limited.
